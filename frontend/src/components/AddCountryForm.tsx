@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { gql, useMutation } from '@apollo/client';
 import { Country, AddCountryFormData } from '../types';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const ADD_COUNTRY = gql`
   mutation AddCountry($data: NewCountryInput!) {
@@ -41,6 +43,12 @@ export default function AddCountryForm() {
           }
         });
       }
+    },
+    onError(error) {
+      toast.error(`Error: ${error.message}`);
+    },
+    onCompleted() {
+      toast.success('Country added successfully!');
     }
   });
 
@@ -53,23 +61,26 @@ export default function AddCountryForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        placeholder="Nom du pays"
-      />
-      <input
-        value={code}
-        onChange={(e) => setCode(e.target.value)}
-        placeholder="Code du pays"
-      />
-      <input
-        value={emoji}
-        onChange={(e) => setEmoji(e.target.value)}
-        placeholder="Emoji du pays"
-      />
-      <button type="submit">Ajouter un pays</button>
-    </form>
+    <>
+      <ToastContainer />
+      <form onSubmit={handleSubmit}>
+        <input
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="Nom du pays"
+        />
+        <input
+          value={code}
+          onChange={(e) => setCode(e.target.value)}
+          placeholder="Code du pays"
+        />
+        <input
+          value={emoji}
+          onChange={(e) => setEmoji(e.target.value)}
+          placeholder="Emoji du pays"
+        />
+        <button type="submit">Ajouter un pays</button>
+      </form>
+    </>
   );
 }
