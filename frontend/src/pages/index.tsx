@@ -20,7 +20,7 @@ export default function Home() {
   if (error) return <p>Error :(</p>;
 
   return (
-    <div>
+    <div className="container">
       <h1>Liste des pays</h1>
       <AddCountryForm />
       <ul>

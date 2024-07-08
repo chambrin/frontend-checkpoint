@@ -43,17 +43,19 @@ export default function CountryDetails() {
   const { id, name, emoji, continent } = data.country;
 
   return (
-    <div>
-      <h1>{emoji} {name}</h1>
-      <p>Code: {code}</p>
-      <p>ID: {id}</p>
-      {continent && (
-        <div>
-          <h2>Continent</h2>
-          <p>Name: {continent.name}</p>
-          <p>ID: {continent.id}</p>
-        </div>
-      )}
+    <div className="container">
+      <div className="country-details">
+        <h1>{emoji} {name}</h1>
+        <p>Code: {code}</p>
+        <p>ID: {id}</p>
+        {continent && (
+          <div>
+            <h2>Continent</h2>
+            <p>Name: {continent.name}</p>
+            <p>ID: {continent.id}</p>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
