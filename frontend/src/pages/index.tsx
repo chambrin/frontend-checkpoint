@@ -1,9 +1,12 @@
 import { useQuery, gql } from '@apollo/client';
+import Link from 'next/link';
 
 const GET_COUNTRIES = gql`
   query GetCountries {
     countries {
+      id
       name
+      code
       emoji
     }
   }
@@ -19,9 +22,11 @@ export default function Home() {
     <div>
       <h1>Liste des pays</h1>
       <ul>
-        {data.countries.map(({ name, emoji }: { name: string, emoji: string }) => (
-          <li key={name}>
-            {emoji} {name}
+        {data.countries.map(({ id, name, code, emoji }: { id: string, name: string, code: string, emoji: string }) => (
+          <li key={id}>
+            <Link href={`/country/${id}`}>
+              {emoji} {name}
+            </Link>
           </li>
         ))}
       </ul>
