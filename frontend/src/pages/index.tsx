@@ -1,5 +1,6 @@
 import { useQuery, gql } from '@apollo/client';
 import Link from 'next/link';
+import AddCountryForm from '../components/AddCountryForm';
 
 const GET_COUNTRIES = gql`
   query GetCountries {
@@ -21,6 +22,7 @@ export default function Home() {
   return (
     <div>
       <h1>Liste des pays</h1>
+      <AddCountryForm />
       <ul>
         {data.countries.map(({ id, name, code, emoji }: { id: string, name: string, code: string, emoji: string }) => (
           <li key={id}>
