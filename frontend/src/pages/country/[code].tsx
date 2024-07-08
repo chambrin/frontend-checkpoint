@@ -1,5 +1,6 @@
 import { useQuery, gql } from '@apollo/client';
 import { useRouter } from 'next/router';
+import { Country } from '../../types';
 
 const GET_COUNTRY_BY_CODE = gql`
   query Country($code: String!) {
@@ -20,7 +21,7 @@ export default function CountryDetails() {
   const router = useRouter();
   const { code } = router.query;
 
-  const { loading, error, data } = useQuery(GET_COUNTRY_BY_CODE, {
+  const { loading, error, data } = useQuery<{ country: Country }>(GET_COUNTRY_BY_CODE, {
     variables: { code },
     skip: !code, // Skip the query if `code` is undefined
   });
@@ -33,6 +34,10 @@ export default function CountryDetails() {
   if (error) {
     console.error('Error:', error);
     return <p>Error: {error.message}</p>;
+  }
+
+  if (!data || !data.country) {
+    return <p>No country data found</p>;
   }
 
   const { id, name, emoji, continent } = data.country;

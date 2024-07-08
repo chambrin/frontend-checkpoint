@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { gql, useMutation } from '@apollo/client';
+import { Country, AddCountryFormData } from '../types';
 
 const ADD_COUNTRY = gql`
   mutation AddCountry($data: NewCountryInput!) {
@@ -17,26 +18,29 @@ export default function AddCountryForm() {
   const [code, setCode] = useState('');
   const [emoji, setEmoji] = useState('');
 
-  const [addCountry] = useMutation(ADD_COUNTRY, {
-    update(cache, { data: { addCountry } }) {
-      cache.modify({
-        fields: {
-          countries(existingCountries = []) {
-            const newCountryRef = cache.writeFragment({
-              data: addCountry,
-              fragment: gql`
-                fragment NewCountry on Country {
-                  id
-                  name
-                  code
-                  emoji
-                }
-              `
-            });
-            return [...existingCountries, newCountryRef];
+  const [addCountry] = useMutation<{ addCountry: Country }, { data: AddCountryFormData }>(ADD_COUNTRY, {
+    update(cache, { data }) {
+      const addCountry = data?.addCountry;
+      if (addCountry) {
+        cache.modify({
+          fields: {
+            countries(existingCountries = []) {
+              const newCountryRef = cache.writeFragment({
+                data: addCountry,
+                fragment: gql`
+                  fragment NewCountry on Country {
+                    id
+                    name
+                    code
+                    emoji
+                  }
+                `
+              });
+              return [...existingCountries, newCountryRef];
+            }
           }
-        }
-      });
+        });
+      }
     }
   });
 
