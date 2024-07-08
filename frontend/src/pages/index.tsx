@@ -24,7 +24,7 @@ export default function Home() {
       <ul>
         {data.countries.map(({ id, name, code, emoji }: { id: string, name: string, code: string, emoji: string }) => (
           <li key={id}>
-            <Link href={`/country/${id}`}>
+            <Link href={`/country/${code}`}>
               {emoji} {name}
             </Link>
           </li>
